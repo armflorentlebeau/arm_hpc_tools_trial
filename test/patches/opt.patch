@@ -1,0 +1,98 @@
+--- ./src/Py/C/mmult.c
++++ ./src/Py/C/mmult.c
+@@ -23,16 +23,12 @@
+ {
+   for(int i=0; i<sz/nslices; i++)
+   {
+-    for(int j=0; j<sz; j++)
++    for(int k=0; k<sz; k++)
+     {
+-      double res = 0.0;
+-
+-      for(int k=0; k<sz; k++)
++      for(int j=0; j<sz; j++)
+       {
+-        res += A[i*sz+k]*B[k*sz+j];
++        C[i*sz+j] += A[i*sz+k]*B[k*sz+j];
+       }
+-
+-      C[i*sz+j] += res;
+     }
+   }
+ }
+
+
+--- ./src/Py/F90/mmult.F90
++++ ./src/Py/F90/mmult.F90
+@@ -27,12 +27,10 @@
+ !f2py intent(hide) :: i,j,k,res
+
+     do i=1,sz/nslices
+-      do j=1,sz
+-        res=0.0
+-        do k=1,sz
+-         res=A(k,i)*B(j,k)+res
++      do k=1,sz
++        do j=1,sz
++          C(j,i)=A(k,i)*B(j,k)+C(j,i)
+         end do
+-        C(j,i)=res+C(j,i)
+       end do
+     end do
+   end subroutine mmult
+
+
+--- ./src/C/mmult.c
++++ ./src/C/mmult.c
+@@ -41,16 +42,12 @@
+ {
+   for(int i=0; i<sz/nslices; i++)
+   {
+-    for(int j=0; j<sz; j++)
++    for(int k=0; k<sz; k++)
+     {
+-      double res = 0.0;
+-
+-      for(int k=0; k<sz; k++)
++      for(int j=0; j<sz; j++)
+       {
+-        res += A[i*sz+k]*B[k*sz+j];
++        C[i*sz+j] += A[i*sz+k]*B[k*sz+j];
+       }
+-
+-      C[i*sz+j] += res;
+     }
+   }
+ }
+
+
+--- ./src/F90/mmult.F90
++++ ./src/F90/mmult.F90
+@@ -171,12 +171,10 @@
+     real(8)                 :: res
+
+     do i=1,sz/nslices
+-      do j=1,sz
+-        res=0.0
+-        do k=1,sz
+-         res=A(k,i)*B(j,k)+res
++      do k=1,sz
++        do j=1,sz
++          C(j,i)=A(k,i)*B(j,k)+C(j,i)
+         end do
+-        C(j,i)=res+C(j,i)
+       end do
+     end do
+   end subroutine mmult
+
+
+--- ./src/make.def
++++ ./src/make.def
+@@ -18,6 +18,6 @@
+ FC = mpif90
+ 
+ # Define additional compilation flags
+-CFLAGS = -O0 -g
++CFLAGS = -Ofast -g
+ LFLAGS =
+
