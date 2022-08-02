@@ -21,6 +21,7 @@ jobs:
     runs-on: ubuntu-20.04
     # Outputs
     outputs:
+      os: ${{ steps.get_os_ver.outputs.os }}
       gcc: ${{ steps.get_gcc_ver.outputs.gcc }}
       gfortran: ${{ steps.get_gfortran_ver.outputs.gfortran }}
       python: ${{ steps.get_python_ver.outputs.python }}
@@ -49,6 +50,11 @@ jobs:
           docker pull ghcr.io/${{ github.actor }}/armhpctrial:latest
 
       # Get versions numbers
+      - name: Get OS version
+        id: get_os_ver
+        run: |
+          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest lsb_release -d | awk -F ":\t" '{ print $2 }' > os.out
+          echo "::set-output name=os::$(cat os.out)"
       - name: Get GCC version
         id: get_gcc_ver
         run: |
@@ -111,12 +117,13 @@ jobs:
           mkdir -p .github/badges
           cd .github/badges
           rm -f *.svg
+          curl -o os.svg https://img.shields.io/badge/${{ needs.get_image.outputs.os }}-blue
           curl -o gcc.svg https://img.shields.io/badge/gcc-${{ needs.get_image.outputs.gcc }}-blue
           curl -o gfortran.svg https://img.shields.io/badge/gfortran-${{ needs.get_image.outputs.gfortran }}-blue
           curl -o openmpi.svg https://img.shields.io/badge/openmpi-${{ needs.get_image.outputs.openmpi }}-blue
           curl -o python.svg https://img.shields.io/badge/python-${{ needs.get_image.outputs.python }}-blue
           curl -o numpy.svg https://img.shields.io/badge/numpy-${{ needs.get_image.outputs.numpy }}-blue
-          curl -o scipy.svg https://img.shields.io/badge/numpy-${{ needs.get_image.outputs.scipy }}-blue
+          curl -o scipy.svg https://img.shields.io/badge/scipy-${{ needs.get_image.outputs.scipy }}-blue
           curl -o mpi4py.svg https://img.shields.io/badge/mpi4py-${{ needs.get_image.outputs.mpi4py }}-blue
           curl -o blas.svg https://img.shields.io/badge/blas-${{ needs.get_image.outputs.blas }}-blue
           git config user.name github-actions
