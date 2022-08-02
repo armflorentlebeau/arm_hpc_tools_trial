@@ -1,4 +1,4 @@
-﻿README
+README
 ======
 
 This README is split into the following sections:
