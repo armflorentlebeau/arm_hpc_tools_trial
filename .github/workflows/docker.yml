@@ -1,6 +1,6 @@
 # This workflow build the Docker image with the application 
 
-name: Build
+name: Build Docker image
 
 # Controls when the action will run. 
 on:
@@ -19,10 +19,6 @@ jobs:
   build_image:
     # The type of runner that the job will run on
     runs-on: ubuntu-20.04
-    # Outputs
-    outputs:
-      gcc: ${{ steps.get_gcc_ver.outputs }}
-      gfortran: ${{ steps.get_gfortran_ver.outputs }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -54,41 +50,3 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           tags: ghcr.io/${{ github.actor }}/armhpctrial:latest
 
-      # Get versions numbers
-      - name: Get software configuration
-        id: get_gcc_ver
-        uses: addnab/docker-run-action@v3
-        with:
-          image: armhpctrial:latest
-          run: gcc -dumpfullversion
-
-      - name: Get software configuration
-        id: get_gfortran_ver
-        uses: addnab/docker-run-action@v3
-        with:
-          image: armhpctrial:latest
-          run: gfortran -dumpfullversion
-
-  badge:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-20.04
-    needs: build_image
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-        with:
-          ref: badges
-
-      - name: Update badge
-        run: |
-          mkdir -p .github/badges
-          cd .github/badges
-          rm -f *.svg
-          curl -o .github/badges/gcc.svg https://img.shields.io/badge/${{ needs.build_image.outputs.gcc }}
-          curl -o .github/badges/gfortran.svg https://img.shields.io/badge/${{ needs.build_image.outputs.gfortran }}
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add badges/*.svg
-          if git commit -m "Update badges"; then
-            git push
-          fi
