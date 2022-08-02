@@ -1,6 +1,6 @@
 # README
 
-Configuration:
+Tested configuration:
 
 |           | C   | Fortran | Python |
 | ---       | --- | ---     | ---    |
@@ -12,6 +12,7 @@ Test reports:
 
 | Type      | Status |
 | ---       | ---    |
-| Debug     | ![C](https://img.shields.io/badge/C-pass-green) ![Fortran](https://img.shields.io/badge/Fortran-pass-green) ![Python](https://img.shields.io/badge/Python-pass-green) |
-| Profile   | ![C](https://img.shields.io/badge/C-pass-green) ![Fortran](https://img.shields.io/badge/Fortran-pass-green) ![Python](https://img.shields.io/badge/Python-pass-green) |
+| Debug     | ![c_debug](https://img.shields.io/badge/C-pass-green) ![f_debug](https://img.shields.io/badge/Fortran-pass-green) ![py_debug](https://img.shields.io/badge/Python-pass-green) |
+| Profile   | ![c_profile](https://img.shields.io/badge/C-pass-green) ![f_profile](https://img.shields.io/badge/Fortran-pass-green) ![py_profile](https://img.shields.io/badge/Python-pass-green) |
 
+For more information about the tutorial, check README.txt and doc/tutorial.rst
