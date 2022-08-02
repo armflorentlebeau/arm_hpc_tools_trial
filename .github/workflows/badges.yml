@@ -21,8 +21,8 @@ jobs:
     runs-on: ubuntu-20.04
     # Outputs
     outputs:
-      gcc: ${{ steps.get_gcc_ver.outputs }}
-      gfortran: ${{ steps.get_gfortran_ver.outputs }}
+      gcc: ${{ steps.get_config.outputs.gcc }}
+      gfortran: ${{ steps.get_config.outputs.gfortran }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -43,15 +43,12 @@ jobs:
           docker pull ghcr.io/${{ github.actor }}/armhpctrial:latest
 
       # Get versions numbers
-      - name: Get GCC version
-        id: get_gcc_ver
+      - name: Get config
+        id: get_config
         run: |
-          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest gcc -dumpfullversion
-
-      - name: Get Gfortran version
-        id: get_gfortran_ver
-        run: |
-          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest gfortran -dumpfullversion
+          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest gcc -dumpfullversion > gcc.out
+          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest gfortran -dumpfullversion > gfortran.out
+          echo "::set-output name=gcc::$(cat gcc.out) name=gfortran::$(cat gfortran.out)"
 
   badge:
     # The type of runner that the job will run on
