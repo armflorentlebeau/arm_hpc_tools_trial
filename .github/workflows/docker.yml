@@ -74,10 +74,10 @@ jobs:
     runs-on: ubuntu-20.04
     needs: build_image
     steps:
-    - name: Check out repository code
-      uses: actions/checkout@v2
-      with:
-        ref: badges
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          ref: badges
 
       - name: Update badge
         run: |
