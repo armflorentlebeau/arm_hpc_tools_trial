@@ -23,6 +23,11 @@ jobs:
     outputs:
       gcc: ${{ steps.get_gcc_ver.outputs.gcc }}
       gfortran: ${{ steps.get_gfortran_ver.outputs.gfortran }}
+      python: ${{ steps.get_python_ver.outputs.python }}
+      numpy: ${{ steps.get_numpy_ver.outputs.numpy }}
+      scipy: ${{ steps.get_scipy_ver.outputs.scipy }}
+      mpi4py: ${{ steps.get_mpi4py_ver.outputs.mpi4py }}
+      blas: ${{ steps.get_blas_ver.outputs.blas }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -55,6 +60,43 @@ jobs:
           docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest gfortran -dumpfullversion > gfortran.out
           echo "::set-output name=gfortran::$(cat gfortran.out)"
 
+      - name: Get OpenMPI version
+        id: get_openmpi_ver
+        run: |
+          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest mpirun --version | awk -F" " '{print $4}' > openmpi.out
+          echo "::set-output name=openmpi::$(cat openmpi.out)"
+
+      - name: Get Python version
+        id: get_python_ver
+        run: |
+          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest python3 --version | awk -F " " '{print $2}' > python.out
+          echo "::set-output name=python::$(cat python.out)"
+
+      - name: Get NumPy version
+        id: get_numpy_ver
+        run: |
+          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest python3 -c 'import numpy; print(numpy.version.version)' > numpy.out
+          echo "::set-output name=numpy::$(cat numpy.out)"
+
+      - name: Get SciPy version
+        id: get_scipy_ver
+        run: |
+          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest python3 -c 'import scipy; print(scipy.version.version)' > scipy.out
+          echo "::set-output name=scipy::$(cat scipy.out)"
+
+      - name: Get MPI4Py version
+        id: get_mpi4py_ver
+        run: |
+          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest python3 -c 'import mpi4py; print(mpi4py.__version__)' > mpi4py.out
+          echo "::set-output name=mpi4py::$(cat mpi4py.out)"
+
+      - name: Get BLAS version
+        id: get_blas_ver
+        run: |
+          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest dpkg-query -l | grep blas3 | awk -F" " '{print $3}' | awk -F"-" '{print $1}' > blas.out
+          echo "::set-output name=blas::$(cat blas.out)"
+
+
   badge:
     # The type of runner that the job will run on
     runs-on: ubuntu-20.04
@@ -70,6 +112,11 @@ jobs:
           rm -f *.svg
           curl -o gcc.svg https://img.shields.io/badge/gcc-${{ needs.get_image.outputs.gcc }}-blue
           curl -o gfortran.svg https://img.shields.io/badge/gfortran-${{ needs.get_image.outputs.gfortran }}-blue
+          curl -o openmpi.svg https://img.shields.io/badge/gfortran-${{ needs.get_image.outputs.openmpi }}-blue
+          curl -o python.svg https://img.shields.io/badge/gfortran-${{ needs.get_image.outputs.python }}-blue
+          curl -o numpy.svg https://img.shields.io/badge/gfortran-${{ needs.get_image.outputs.numpy }}-blue
+          curl -o mpi4py.svg https://img.shields.io/badge/gfortran-${{ needs.get_image.outputs.mpi4py }}-blue
+          curl -o blas.svg https://img.shields.io/badge/gfortran-${{ needs.get_image.outputs.blas }}-blue
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add *.svg
