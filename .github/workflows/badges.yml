@@ -25,7 +25,7 @@ jobs:
       gcc: ${{ steps.get_gcc_ver.outputs.gcc }}
       gfortran: ${{ steps.get_gfortran_ver.outputs.gfortran }}
       python: ${{ steps.get_python_ver.outputs.python }}
-      openmpi: ${{ steps.get_python_ver.outputs.openmpi }}
+      openmpi: ${{ steps.get_openmpi_ver.outputs.openmpi }}
       numpy: ${{ steps.get_numpy_ver.outputs.numpy }}
       scipy: ${{ steps.get_scipy_ver.outputs.scipy }}
       mpi4py: ${{ steps.get_mpi4py_ver.outputs.mpi4py }}
@@ -53,7 +53,7 @@ jobs:
       - name: Get OS version
         id: get_os_ver
         run: |
-          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest lsb_release -d | awk -F ":\t" '{ print $2 }' | sed "s/ /-/g" > os.out
+          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest lsb_release -d | awk -F ":\t" '{ print $2 }' | awk -F " " '{ print $1"-"$2 }' > os.out
           echo "::set-output name=os::$(cat os.out)"
 
       - name: Get GCC version
