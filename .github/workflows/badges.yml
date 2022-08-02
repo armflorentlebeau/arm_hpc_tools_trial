@@ -53,7 +53,7 @@ jobs:
       - name: Get OS version
         id: get_os_ver
         run: |
-          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest lsb_release -d | awk -F ":\t" '{ print $2 }' > os.out
+          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest lsb_release -d | awk -F ":\t" '{ print $2 }' | sed "s/ /-/g" > os.out
           echo "::set-output name=os::$(cat os.out)"
       - name: Get GCC version
         id: get_gcc_ver
