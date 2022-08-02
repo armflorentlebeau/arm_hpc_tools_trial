@@ -4,7 +4,7 @@ Tested configuration:
 
 |           | C   | Fortran | Python |
 | ---       | --- | ---     | ---    |
-| Compiler  | ![c_compiler(https://raw.githubusercontent.com/armflorentlebeau/arm_hpc_tools_trial//master/badges/gcc.svg)] | ![f_compiler](badges/gfortran) | ![python](badges/python) ![numpy](badges/numpy) |
+| Compiler  | ![c_compiler](https://raw.githubusercontent.com/armflorentlebeau/arm_hpc_tools_trial/master/badges/blas.svg) | ![f_compiler](badges/gfortran) | ![python](badges/python) ![numpy](badges/numpy) |
 | MPI       | ![openmpi](badges/openmpi) | ![openmpi](badges/openmpi) | ![mpi4py](badges/mpi4py) |
 | BLAS      | ![blas](badges/blas) | ![blas](badges/blas) | ![scipy](badges/scipy) |
 
