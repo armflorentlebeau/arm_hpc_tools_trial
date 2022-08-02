@@ -63,7 +63,7 @@ jobs:
       - name: Get OpenMPI version
         id: get_openmpi_ver
         run: |
-          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest mpirun --version | awk -F" " '{print $4}' > openmpi.out
+          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest mpirun --version | awk -F " " '{print $4}' > openmpi.out
           echo "::set-output name=openmpi::$(cat openmpi.out)"
 
       - name: Get Python version
@@ -93,7 +93,7 @@ jobs:
       - name: Get BLAS version
         id: get_blas_ver
         run: |
-          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest dpkg-query -l | grep blas3 | awk -F" " '{print $3}' | awk -F"-" '{print $1}' > blas.out
+          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest dpkg-query -l | grep blas3 | awk -F " " '{print $3}' | awk -F "-" '{print $1}' > blas.out
           echo "::set-output name=blas::$(cat blas.out)"
 
 
@@ -112,11 +112,11 @@ jobs:
           rm -f *.svg
           curl -o gcc.svg https://img.shields.io/badge/gcc-${{ needs.get_image.outputs.gcc }}-blue
           curl -o gfortran.svg https://img.shields.io/badge/gfortran-${{ needs.get_image.outputs.gfortran }}-blue
-          curl -o openmpi.svg https://img.shields.io/badge/gfortran-${{ needs.get_image.outputs.openmpi }}-blue
-          curl -o python.svg https://img.shields.io/badge/gfortran-${{ needs.get_image.outputs.python }}-blue
-          curl -o numpy.svg https://img.shields.io/badge/gfortran-${{ needs.get_image.outputs.numpy }}-blue
-          curl -o mpi4py.svg https://img.shields.io/badge/gfortran-${{ needs.get_image.outputs.mpi4py }}-blue
-          curl -o blas.svg https://img.shields.io/badge/gfortran-${{ needs.get_image.outputs.blas }}-blue
+          curl -o openmpi.svg https://img.shields.io/badge/openmpi-${{ needs.get_image.outputs.openmpi }}-blue
+          curl -o python.svg https://img.shields.io/badge/python-${{ needs.get_image.outputs.python }}-blue
+          curl -o numpy.svg https://img.shields.io/badge/numpy-${{ needs.get_image.outputs.numpy }}-blue
+          curl -o mpi4py.svg https://img.shields.io/badge/mpi4py-${{ needs.get_image.outputs.mpi4py }}-blue
+          curl -o blas.svg https://img.shields.io/badge/blas-${{ needs.get_image.outputs.blas }}-blue
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add *.svg
