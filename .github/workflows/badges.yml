@@ -55,6 +55,7 @@ jobs:
         run: |
           docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest lsb_release -d | awk -F ":\t" '{ print $2 }' | sed "s/ /-/g" > os.out
           echo "::set-output name=os::$(cat os.out)"
+
       - name: Get GCC version
         id: get_gcc_ver
         run: |
@@ -70,7 +71,7 @@ jobs:
       - name: Get OpenMPI version
         id: get_openmpi_ver
         run: |
-          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest mpirun --version | awk -F " " '{print $4}' > openmpi.out
+          docker run --platform arm64 --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest mpirun --version | awk -F " " '{print $4}' | sed '2,3d' > openmpi.out
           echo "::set-output name=openmpi::$(cat openmpi.out)"
 
       - name: Get Python version
