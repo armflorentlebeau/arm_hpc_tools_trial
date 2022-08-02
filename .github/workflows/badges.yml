@@ -63,11 +63,11 @@ jobs:
           mkdir -p .github/badges
           cd .github/badges
           rm -f *.svg
-          curl -o .github/badges/gcc.svg https://img.shields.io/badge/${{ needs.get_image.outputs.gcc }}
-          curl -o .github/badges/gfortran.svg https://img.shields.io/badge/${{ needs.get_image.outputs.gfortran }}
+          curl -o gcc.svg https://img.shields.io/badge/${{ needs.get_image.outputs.gcc }}
+          curl -o gfortran.svg https://img.shields.io/badge/${{ needs.get_image.outputs.gfortran }}
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add badges/*.svg
+          git add *.svg
           if git commit -m "Update badges"; then
             git push
           fi
