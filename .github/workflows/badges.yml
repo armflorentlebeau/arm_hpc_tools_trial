@@ -24,6 +24,7 @@ jobs:
       gcc: ${{ steps.get_gcc_ver.outputs.gcc }}
       gfortran: ${{ steps.get_gfortran_ver.outputs.gfortran }}
       python: ${{ steps.get_python_ver.outputs.python }}
+      openmpi: ${{ steps.get_python_ver.outputs.openmpi }}
       numpy: ${{ steps.get_numpy_ver.outputs.numpy }}
       scipy: ${{ steps.get_scipy_ver.outputs.scipy }}
       mpi4py: ${{ steps.get_mpi4py_ver.outputs.mpi4py }}
@@ -115,6 +116,7 @@ jobs:
           curl -o openmpi.svg https://img.shields.io/badge/openmpi-${{ needs.get_image.outputs.openmpi }}-blue
           curl -o python.svg https://img.shields.io/badge/python-${{ needs.get_image.outputs.python }}-blue
           curl -o numpy.svg https://img.shields.io/badge/numpy-${{ needs.get_image.outputs.numpy }}-blue
+          curl -o scipy.svg https://img.shields.io/badge/numpy-${{ needs.get_image.outputs.scipy }}-blue
           curl -o mpi4py.svg https://img.shields.io/badge/mpi4py-${{ needs.get_image.outputs.mpi4py }}-blue
           curl -o blas.svg https://img.shields.io/badge/blas-${{ needs.get_image.outputs.blas }}-blue
           git config user.name github-actions
