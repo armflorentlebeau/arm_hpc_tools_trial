@@ -42,12 +42,12 @@ jobs:
       - name: Get GCC version
         id: get_gcc_ver
         run: |
-          docker run --rm ghcr.io/${{ github.actor }}/armhpctrial:latest gcc -dumpfullversion
+          docker run --platform arm64 --rm ghcr.io/${{ github.actor }}/armhpctrial:latest gcc -dumpfullversion
 
       - name: Get Gfortran version
         id: get_gfortran_ver
         run: |
-          docker run --rm ghcr.io/${{ github.actor }}/armhpctrial:latest gfortran -dumpfullversion
+          docker run --platform arm64 --rm ghcr.io/${{ github.actor }}/armhpctrial:latest gfortran -dumpfullversion
 
   badge:
     # The type of runner that the job will run on
