@@ -10,6 +10,7 @@ PYTHON="python"
 MPIRUN_CMD="mpirun -n ${NPROCS}"
 
 ############# DO NOT EDIT BELOW #############
+PACKAGE=arm_hpc_tools_trial
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
@@ -100,12 +101,18 @@ run () {
 
 printf "Downloading trial package...\n\n"
 if [ ! -f $PACKAGE.tar.gz ]; then
-  wget https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/aas-forge-trials-package/$PACKAGE.tar.gz
+  git clone ~/Shared/git/arm_trial_v2
+  #wget https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/aas-forge-trials-package/$PACKAGE.tar.gz
 fi
 
 tar xf $PACKAGE.tar.gz $PACKAGE/src/ -C .
 mv $PACKAGE/src .
 rm -rf $PACKAGE
+
+printf "Converting to UNIX EOL...\n\n"
+for file in $(tree -fi src); do
+  dos2unix $file
+done
 
 printf "${GREEN}[1/${NT}] Start trial package test: copy sources${NC}\n\n"
 BLAS="0"
@@ -121,6 +128,8 @@ echo
 printf "${GREEN}[3/${NT}] Run...${NC}\n"
 run
 echo
+
+exit
 
 printf "${GREEN}[4/${NT}] Recompile with optimizations...${NC}\n"
 cd ${TMP_DIR}
@@ -146,8 +155,9 @@ echo
 printf "${GREEN}[8/${NT}] Remove temporary folder...${NC}\n\n"
 cd ${ROOT_DIR}
 # Comment the two lines below for debugging
-rm -rf ${TMP_DIR}
-rm -rf $PACKAGE.tar.gz
+#rm -rf ${TMP_DIR}
+#rm -rf src/
+#rm -rf $PACKAGE.tar.gz
 
 if [ "${ERROR}" == "0" ]; then
   printf "${GREEN}[9/${NT}] Completed with no error${NC}\n"

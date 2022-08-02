@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE html><html lang="en">
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="Copyright |copyp| Copyright &#xA9;&#xA0;2016-2019 Arm Limited (or its affiliates). All rights reserved. Limited or its affiliates. All rights reserved."/>
+<meta content="Software Development Tools, IDEs and Tool Suites, High Performance Computing (HPC), Forge, Software Development Tools, IDEs and Tool Suites, High Performance Computing (HPC), Performance Reports" name="keywords"/>
+<title>The algorithm</title>
+<link rel="stylesheet" href="armEclipse.css" type="text/css"/>
+</head>
+<body>
+<div class="book">
+
+
+<div class="section" id="the-algorithm">
+<h1>The algorithm</h1>
+<p>Describes the algorithm used in the Arm<sup>®</sup> Allinea Studio/Arm<sup>®</sup> Forge Trials package tutorial.</p>
+<p>The application in this tutorial performs the following calculation:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span/>C = A * B + C
+</pre></div>
+</div>
+<p>A, B, and C are double-precision square matrices. In this first version, the algorithm is written in parallel using MPI and includes one master process and several worker processes. The application performs the following tasks:</p>
+<ul>
+<li>The master process initializes matrices A, B, and C.</li>
+<li>The master process sends the entire matrix B, along with slices of A and C, to the worker processes.</li>
+<li>The master and worker processes perform the matrix multiplication function on the domain that has been given to the processes, and each process computes a slice of C.</li>
+<li>The master process retrieves all slices of C and puts the results into matrix C.</li>
+<li>The master process writes the results of C in a file.</li>
+</ul>
+<div class="figure">
+<img src="parallel-algorithm.png" alt="Description of the parallel algorithm"/>
+</div>
+<p>The figure shows how all processes contribute in parallel to the creation of the result in matrix C.</p>
+<p>This package includes C/C++, Fortran, and Python versions of this application.</p>
+</div>
+
+
+</div>
+<div align="center" class="footer"><p> Copyright © 2019 Arm Limited (or its affiliates). All rights reserved.</p></div>
+</html>

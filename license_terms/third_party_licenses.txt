@@ -1,0 +1,28 @@
+================================================================================
+This file lists the package level copyright and license information for third
+party software included in this release of 'Arm Allinea Studio/Arm Forge
+trials package'. Refer to the End User License Agreement that accompanies this
+release of 'Arm Allinea Studio/Arm Forge trials package' for terms and
+conditions relating to your use of such third party software.
+
+The information is grouped into two sections. The first section lists out
+details of third party software projects, including names of the applicable
+licenses as per the SPDX format (http://spdx.org/licenses). The second section
+includes the full license text of all applicable licenses referenced in the
+first section.
+================================================================================
+
+SECTION 1: THIRD PARTY SOFTWARE PROJECTS
+================================================================================
+There are no third party software projects applicable to this release of 
+'Arm Allinea Studio/Arm Forge trials package'.
+
+================================================================================
+
+SECTION 2: APPLICABLE LICENSES
+================================================================================
+There are no third party software licenses applicable to this release of 
+'Arm Allinea Studio/Arm Forge trials package'.
+
+================================================================================
+END OF FILE: third_party_licenses.txt

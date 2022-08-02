@@ -1,0 +1,1099 @@
+/**************************************************************************
+ * Framing
+ *************************************************************************/
+
+frameset {
+	color: white;
+	background-color: white;
+}
+
+html {
+	border: 0;
+}
+
+body {
+	background-color: white;
+	border: 0;
+	margin-bottom: 1em;
+}
+
+
+/**************************************************************************
+ * Header and footer layout
+ *************************************************************************/
+
+.headers,
+.footers {
+	clear: both;
+}
+
+.headers {
+	margin-top: 10px;
+}
+
+.logobar {
+	/* no longer used */
+	display: none;
+}
+
+.navbar {
+	/* no longer used */
+	display: none;
+	background-color:#003366;
+}
+
+.titlingbar,
+.titlebar {
+	background-color:#0f758e;
+}
+
+.titlebar td {
+	color: white;
+    font-size: 125%;
+}
+
+.titlebar .titlecell {
+    font-weight: bold;
+}
+
+.titlebar .subtitlecell {
+    font-weight: normal;
+}
+
+.titlebar td {
+	padding-left: 17px;
+	padding-right: 17px;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+}
+
+.breadcrumbbar td,
+.breadcrumbbar :link,
+.breadcrumbbar :visited {
+	color:#999999;
+}
+
+.breadcrumbbar td {
+	padding-top: 0.25em;
+	padding-bottom: 0.25em;
+}
+
+.legalfooter td {
+	color:#003366;
+}
+
+.legalfooter {
+	background-color:#eaf9fd;
+	margin-top: 1em;
+}
+
+.legalfooter td {
+	padding-left: 1em;
+	padding-right: 1em;
+	padding-top: 0.25em;
+	padding-bottom: 0.25em;
+}
+
+.legalfooter .pdflinkcell {
+	padding-bottom: 0.5em;
+}
+
+@media print {
+
+	.headers {
+		border-top: 1px solid gray;
+		border-bottom: 1px solid gray;
+		margin-bottom: 2em; 
+	}
+
+	.footers {
+		border-top: 1px solid gray;
+		margin-top: 2em; 
+	}
+
+	.logobar,
+	.logobar td,
+	.navbar,
+	.navbar td,
+    .breadcrumbbar,
+    .breadcrumbbar td,
+	.pdflinkbar,
+	.pdflinkbar td {
+		display: none;
+	}
+
+	.titlingbar,
+	.titlebar,
+	.legalfooter {
+		background-color: inherit;
+	}
+
+	.titlebar td,
+	.legalfooter td {
+		color: inherit;
+	}
+
+	.titlebar td {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.legalfooter {
+		margin-top: 0;
+	}
+
+	.legalfooter td {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+
+
+/**************************************************************************
+ * Font families and colors
+ *************************************************************************/
+
+body,
+table {
+	color: black;
+	font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+}
+
+pre,
+code,
+.cmdsynopsis,
+.funcsynopsis,
+.command,
+.code,
+.codeph,
+.errortext,
+.type,
+.sourcecode {
+	color:#333399;
+	font-family:'Lucida Sans Typewriter', 'Courier New', Courier, monospace;
+}
+
+.replaceable > code {
+	color: inherit;
+	font-family: inherit;
+}
+
+.browserwarning {
+	color: red;
+}
+
+
+/**************************************************************************
+ * Font sizes
+ *************************************************************************/
+
+body,
+table {
+	font-size: small;
+}
+
+.toc {
+	font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+}
+
+h1 {
+	font-size: 1.6em;
+}
+
+h2 {
+	font-size: 1.4em;
+}
+
+h3,
+h4,
+h5,
+h6{
+	font-size: 1.2em;
+}
+
+h3.note,
+h3.caution,
+h3.warning {
+	font-size: 1em;
+}
+
+pre,
+code,
+.cmdsynopsis,
+.funcsynopsis,
+.command,
+.errortext,
+.type,
+.sourcecode {
+	font-size: 0.9em;
+}
+
+pre pre, pre code, pre .cmdsynopsis, pre .funcsynopsis, pre .command, pre .errortext, pre .type, pre .sourcecode,
+code pre, code code, code .cmdsynopsis, code .funcsynopsis, code .command, code .errortext, code .type, code .sourcecode,
+.cmdsynopsis pre, .cmdsynopsis code, .cmdsynopsis .cmdsynopsis, .cmdsynopsis .funcsynopsis, .cmdsynopsis .command, .cmdsynopsis .errortext, .cmdsynopsis .type, .cmdsynopsis .sourcecode,
+.funcsynopsis pre, .funcsynopsis code, .funcsynopsis .cmdsynopsis, .funcsynopsis .funcsynopsis, .funcsynopsis .command, .funcsynopsis .errortext, .funcsynopsis .type, .funcsynopsis .sourcecode,
+.command pre, .command code, .command .cmdsynopsis, .command .funcsynopsis, .command .command, .command .errortext, .command .type, .command .sourcecode,
+.errortext pre, .errortext code, .errortext .cmdsynopsis, .errortext .funcsynopsis, .errortext .command, .errortext .errortext, .errortext .type, .errortext .sourcecode,
+.type pre, .type code, .type .cmdsynopsis, .type .funcsynopsis, .type .command, .type .errortext, .type .type, .type .sourcecode,
+.sourcecode pre, .sourcecode code, .sourcecode .cmdsynopsis, .sourcecode .funcsynopsis, .sourcecode .command, .sourcecode .errortext, .sourcecode .type, .sourcecode .sourcecode {
+	/* ensure nested occurences of above do not change size */
+	font-size: 100%;
+}
+
+.replaceable > code {
+	font-size: 100%;
+}
+
+
+/**************************************************************************
+ * Font styling
+ *************************************************************************/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight:bold;
+	font-style:normal;
+}
+
+h2.sectiontitle {
+    font-size:1.2em;
+}
+
+dt {
+	font-weight: bold;
+}
+
+dt.typographydt {
+	font-weight: normal;
+}
+
+dt.typographydtbold {
+	font-weight: bold;
+}
+/*newly created css declaration for a normal weighted dt, when dt possess child elements.*/
+dt.normaldt {
+	font-weight: normal;
+}
+
+.toc dt,
+.list-of-figures dt,
+.list-of-tables dt {
+	font-weight: normal;
+}
+
+th {
+	font-weight: bold;
+}
+
+.ENCODING thead th,
+.ENCODING thead td {
+	font-weight: normal;
+}
+
+em {
+	font-style: italic;
+}
+
+strong {
+	font-weight: bold;
+}
+
+var {
+	font-style: italic;
+}
+
+.interface,
+.uicontrol {
+    font-weight: bold;
+}
+
+.smallcaps,
+.archterm {
+	font-variant: small-caps;
+	font-weight: inherit;
+	font-style: normal;
+}
+
+.classname,
+.code,
+.codeph,
+.command,
+.command > strong,
+.errortext,
+.filename,
+.function,
+.literal,
+.option,
+.parameter,
+.structfield,
+.structname {
+	font-weight: normal;
+}
+
+/* additional DITA classes from software-domain and programming-domain - applied to span element */
+.filepath 
+{
+	color:#333399;
+	font-family:'Lucida Sans Typewriter', 'Courier New', Courier, monospace;
+	font-weight: inherit;
+	font-size: 100%;
+}
+
+.kwd
+{
+	font-size: 100%;
+	font-weight: bold;
+}
+
+.pt {
+	color:#333399;
+	font-family:'Lucida Sans Typewriter', 'Courier New', Courier, monospace;
+	font-size:100%;
+    font-weight: bold;
+}
+
+.cmdname {
+	color:#333399;
+	font-family:'Lucida Sans Typewriter', 'Courier New', Courier, monospace;
+	font-size:100%;
+}
+
+/* Change in requirement
+                    http://jira.arm.com/browse/ASDDITA-2039
+                    wintitle should always be bold*/
+.wintitle {
+	font-weight: bold;
+	}
+	
+.msgnum,
+.varname,
+.oper,
+.delim,
+.sep,
+.repsep,
+.parmname,
+.apiname {
+	font-weight: normal;
+	font-size: 100%;
+}
+
+.var {
+	font-style: italic;
+	font-size: 100%;
+}
+
+/* additional DITA classes from software-domain and programming-domain - applied to samp element */
+.msgph,
+.sysout {
+	font-weight: inherit;
+	font-size: 100%;
+}
+
+/* removed font-style: italic; to match PDF */
+.codeph {
+	font-size: 100%;
+}
+
+.menuselection {
+	font-weight: bold;
+}
+
+.signal {
+    font-weight: bold;
+}
+
+/* end of additional DITA classes */
+
+.type {
+    font-weight: bold;
+}
+
+.sgmltag-starttag {
+    font-weight: inherit;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.uput {
+  color:#333399;
+  text-decoration: underline;
+  font-family:'Lucida Sans Typewriter', 'Courier New', Courier, monospace;
+}
+
+/* removed underline to match PDF
+	text-decoration: underline; */
+.userinput {
+    font-weight: inherit;
+    color:#333399;
+	font-family:'Lucida Sans Typewriter', 'Courier New', Courier, monospace;
+}
+
+em.parameter,
+em.structfield {
+    font-style: inherit;
+}
+
+
+/**************************************************************************
+ * Margins and borders
+ *************************************************************************/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	clear: both;
+}
+
+.headers + h1,
+.headers + div > h1:first-child,
+.headers + div > div:first-child > h1:first-child,
+.headers + div > div:first-child > div:first-child > h1:first-child,
+.headers + div > div:first-child > div:first-child > div:first-child > h1:first-child,
+.headers + h2,
+.headers + div > h2:first-child,
+.headers + div > div:first-child > h2:first-child,
+.headers + div > div:first-child > div:first-child > h2:first-child,
+.headers + div > div:first-child > div:first-child > div:first-child > h2:first-child,
+.headers + h3,
+.headers + div > h3:first-child,
+.headers + div > div:first-child > h3:first-child,
+.headers + div > div:first-child > div:first-child > h3:first-child,
+.headers + div > div:first-child > div:first-child > div:first-child > h3:first-child {
+	/* an h1, h2, or h3 at top of page */
+	margin-top: 0.25em !important;
+	margin-bottom: 0 !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin-top: 1.2em;
+	margin-bottom: 0;
+}
+
+h1 + *,
+h2 + *,
+h3 + *,
+h4 + *,
+h5 + *,
+h6 + *,
+.titlepage + *{
+    /* element after a heading */
+	margin-top: 0.4em !important;
+	margin-bottom: 0.2em !important;
+}
+
+.p,
+p {
+	margin-top: 0.8em;
+	margin-bottom: 0.2em;
+}
+
+pre {
+	margin-top: 0.8em;
+	margin-bottom: 0.2em;
+	margin-left: 0.5em;
+}
+
+ul,
+ol,
+dl {
+	margin-top: 0.8em;
+	margin-bottom: 0.2em;
+}
+
+ul li,
+ol li,
+dl dt {
+	margin-top: 0.6em;
+	margin-bottom: 0.2em;
+} 
+
+ul li *,
+ol li *,
+dl dd,
+dl dd *{
+    margin-top: 0.4em;
+	margin-bottom: 0.2em;
+} 
+
+ul[compact],
+ol[compact],
+dl[compact]{
+    margin-top: 0.4em;
+	margin-bottom: 0.2em;
+}
+
+ul[compact] li,
+ol[compact] li,
+dl[compact] dt {
+	margin-top: 0.3em;
+	margin-bottom: 0.2em;
+} 
+
+ul[compact] li *,
+ol[compact] li *,
+dl[compact] dd,
+dl[compact] dd *{
+    margin-top: 0.3em;
+	margin-bottom: 0.2em;
+} 
+
+ul ul,
+ul ol,
+ul dl,
+ol ul,
+ol ol,
+ol dl,
+dl ul,
+dl ol,
+dl dl {
+	margin-top: 0.6em;
+	margin-bottom: 0.2em;
+}
+
+ul ul li,
+ul ol li,
+ul dl dt,
+ol ul li,
+ol ol li,
+ol dl dt,
+dl ul li,
+dl ol li,
+dl dl dt {
+	margin-top: 0.4em;
+	margin-bottom: 0.2em;
+} 
+
+ul ul li *,
+ul ol li *,
+ul dl dd,
+ul dl dd *,
+ol ul li *,
+ol ol li *,
+ol dl dd,
+ol dl dd *,
+dl ul li *,
+dl ol li *,
+dl dl dd,
+dl dl dd *{
+    margin-top: 0.3em;
+	margin-bottom: 0.2em;
+}
+
+div.note,
+div.caution,
+div.warning {
+	background-color:#f5f5f5;
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+}
+
+.codeblock,
+.example {
+	background-color:#f5f5f5;
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	padding-bottom: 0.2em;
+}
+
+@media print {
+    div.note,
+    div.caution,
+    div.warning {
+    	border-left: 1px solid silver;
+    	background-color: inherit;
+    	padding-left: 0.5em;
+    	padding-right: 0;
+    	padding-top: 0;
+    	padding-bottom: 0;
+    }
+}
+
+h3.note,
+h3.caution,
+h3.warning {
+	margin-top: 0 !important;
+}
+
+.note,
+.caution,
+.warning {
+	margin-top: 0.8em;
+	margin-bottom: 0.2em;
+}
+
+.note *,
+.caution *,
+.warning *{
+    margin-top: 0.6em;
+	margin-bottom: 0.2em;
+}
+
+ul .note,
+ul .caution,
+ul .warning,
+ol .note,
+ol .caution,
+ol .warning,
+dl .note,
+dl .caution,
+dl .warning {
+	margin-top: 0.6em;
+	margin-bottom: 0.2em;
+} 
+
+ul .note *,
+ul .caution *,
+ul .warning *,
+ol .note *,
+ol .caution *,
+ol .warning *,
+dl .note *,
+dl .caution *,
+dl .warning *{
+    margin-top: 0.4em;
+	margin-bottom: 0.2em;
+} 
+
+ul[compact] .note,
+ul[compact] .caution,
+ul[compact] .warning,
+ol[compact] .note,
+ol[compact] .caution,
+ol[compact] .warning,
+dl[compact] .note,
+dl[compact] .caution,
+dl[compact] .warning {
+	margin-top: 0.4em;
+	margin-bottom: 0.2em;
+} 
+
+ul[compact] .note *,
+ul[compact] .caution *,
+ul[compact] .warning *,
+ol[compact] .note *,
+ol[compact] .caution *,
+ol[compact] .warning *,
+dl[compact] .note *,
+dl[compact] .caution *,
+dl[compact] .warning *{
+    margin-top: 0.3em;
+	margin-bottom: 0.2em;
+} 
+
+ul ul .note,
+ul ul .caution,
+ul ul .warning,
+ul ol .note,
+ul ol .caution,
+ul ol .warning,
+ul dl .note,
+ul dl .caution,
+ul dl .warning,
+ol ul .note,
+ol ul .caution,
+ol ul .warning,
+ol ol .note,
+ol ol .caution,
+ol ol .warning,
+ol dl .note,
+ol dl .caution,
+ol dl .warning,
+dl ul .note,
+dl ul .caution,
+dl ul .warning,
+dl ol .note,
+dl ol .caution,
+dl ol .warning,
+dl dl dt,
+dl dl .note,
+dl dl .caution,
+dl dl .warning {
+	margin-top: 0.4em;
+	margin-bottom: 0.2em;
+} 
+
+ul ul .note *,
+ul ul .caution *,
+ul ul .warning *,
+ul ol .note *,
+ul ol .caution *,
+ul ol .warning *,
+ul dl .note *,
+ul dl .caution *,
+ul dl .warning *,
+ol ul .note *,
+ol ul .caution *,
+ol ul .warning *,
+ol ol .note *,
+ol ol .caution *,
+ol ol .warning *,
+ol dl .note *,
+ol dl .caution *,
+ol dl .warning *,
+dl ul .note *,
+dl ul .caution *,
+dl ul .warning *,
+dl ol .note *,
+dl ol .caution *,
+dl ol .warning *,
+dl dl .note *,
+dl dl .caution *,
+dl dl .warning *{
+    margin-top: 0.3em;
+	margin-bottom: 0.2em;
+} 
+
+ul.simple {
+list-style-type:none;
+}
+
+h2.subtitle {
+	margin-top: 0.2em;
+}
+
+.list-of-figures,
+.list-of-tables,
+.legalnotice-title,
+.revhistory,
+.abstract {
+	margin-top: 1.2em;
+}
+
+.toc dt {
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
+}
+
+.toc dl {
+	margin-top: 0.4em;
+	margin-bottom: 0.3em;
+}
+
+.toc dd {
+	margin-left: 2.4em;
+}
+
+.noindent dl dd {
+	margin-left: 0;
+}
+
+
+/**************************************************************************
+ * Links
+ *************************************************************************/
+
+:link {
+	color:#0f758e;
+}
+
+:visited {
+	color:#4f0f8e;
+}
+
+:link,
+:visited {
+	text-decoration: none;
+}
+
+:link:hover,
+:visited:hover {
+	color:#faa61a;
+	border-bottom: 1px dotted;
+}
+
+:link:active,
+:visited:active {
+	color:#faa61a;
+}
+
+@media print {
+	:link,
+	:visited,
+	:link:hover,
+	:visited:hover,
+	:link:active,
+	:visited:active {
+		color: inherit;
+		text-decoration: inherit;
+		border-bottom: inherit;
+	}
+}
+
+
+
+/**************************************************************************
+ * Table borders : note that class TABLE was old style with row separaors only
+ * .TABLE is old style rowseps only
+ * .NEWTABLE  is new style grisd
+ * .custom is override to allow users ot specify their own rules
+ *************************************************************************/
+
+.TABLE table,
+.NEWTABLE table,
+.custom table,
+.revhistory table,
+.COMPACT table,
+.ENCODING table,
+.ENCODINGTOP table,
+.SYNTAX table {
+	border-collapse: collapse;
+	border-width: 0;
+}
+
+
+.TABLE thead th,
+.TABLE thead td,
+.revhistory thead th,
+.revhistory thead td,
+.COMPACT thead th,
+.COMPACT thead td {
+	border-top-width: 2px;
+	border-left-width: 0;
+	border-right-width: 0;
+	border-bottom-width: 2px;
+	border-top-style: solid;
+	border-left-style: hidden;
+	border-right-style: hidden;
+	border-bottom-style: solid;
+	border-color: black;
+}
+
+/* rules everywhere for non cusotm table */
+.NEWTABLE thead th,
+.NEWTABLE thead td,
+.NEWTABLE tbody th,
+.NEWTABLE tbody td,
+.NEWTABLE tfoot th,
+.NEWTABLE tfoot td {
+	border-top-width: 1px;
+	border-left-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-top-style: solid;
+	border-left-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-color: black;
+}
+
+
+/* apply specifc rules for custom tables 
+BUT user needs to apply rules very explciitly ad cance lout borderders on table 
+see http://jira.arm.com/browse/ASDDITA-2014 for examples */
+.cellrowborder {
+  border-left: none;
+  border-top: none;
+  border-right: solid 1px;
+  border-bottom: solid 1px;
+  border-color: black;
+}
+.row-nocellborder {
+  border-left: none;
+  border-top: none;
+  border-right: hidden;
+  border-bottom: solid 1px;
+  border-color: black;
+}
+.cell-norowborder {
+  border-top: none;
+  border-left: none;
+  border-bottom: hidden;
+  border-right: solid 1px;
+  border-color: black;
+}
+.nocellnorowborder {
+  border: none;
+  border-right: hidden;
+  border-bottom: hidden;
+  border-color: black;
+}
+
+.TABLE tbody th,
+.TABLE tbody td,
+.TABLE tfoot th,
+.TABLE tfoot td,
+.revhistory tbody th,
+.revhistory tbody td,
+.revhistory tfoot th,
+.revhistory tfoot td,
+.COMPACT tbody th,
+.COMPACT tbody td,
+.COMPACT tfoot th,
+.COMPACT tfoot td {
+	border-top-width: 1px;
+	border-left-width: 0;
+	border-right-width: 0;
+	border-bottom-width: 1px;
+	border-top-style: solid;
+	border-left-style: hidden;
+	border-right-style: hidden;
+	border-bottom-style: solid;
+	border-color: black;
+}
+
+.ENCODING thead th,
+.ENCODING thead td {
+	border-top-width: 0;
+	border-left-width: 0;
+	border-right-width: 0;
+	border-bottom-width: 1px;
+	border-top-style: hidden;
+	border-left-style: hidden;
+	border-right-style: hidden;
+	border-bottom-style: solid;
+	border-color: black;
+}
+
+.ENCODING tbody th,
+.ENCODING tbody td,
+.ENCODING tfoot th,
+.ENCODING tfoot td {
+	border-width: 1px;
+	border-style: solid;
+	border-color: black;
+}
+
+.ENCODINGTOP th,
+.ENCODINGTOP td,
+.SYNTAX th,
+.SYNTAX td {
+	border-width: 0;
+	border-style: hidden;
+	border-color: black;
+}
+
+th > :first-child,
+td > :first-child {
+	margin-top: 0 !important;
+}
+
+
+/**************************************************************************
+ * Table padding
+ *************************************************************************/
+
+.TABLE th,
+.TABLE td,
+.NEWTABLE th,
+.NEWTABLE td,
+.custom td,
+.custom th,
+.revhistory th,
+.revhistory td {
+	padding: 0.5em;
+}
+
+.COMPACT th,
+.COMPACT td,
+.ENCODING th,
+.ENCODING td {
+	padding: 0.25em;
+}
+
+.ENCODINGTOP th,
+.ENCODINGTOP td,
+.SYNTAX th,
+.SYNTAX td {
+	padding: 0.125em;
+}
+
+
+/**************************************************************************
+ * Table content alignment
+ *************************************************************************/
+
+.TABLE table thead,
+.NEWTABLE table thead,
+.custom table thead,
+.revhistory table thead,
+.COMPACT table thead,
+.ENCODINGTOP table thead,
+.SYNTAX table thead {
+	text-align: left;
+	vertical-align: middle;
+}
+
+.TABLE table tbody,
+.NEWTABLE table tbody,
+.custom table thead,
+.revhistory table tbody,
+.COMPACT table tbody,
+.ENCODINGTOP table tbody,
+.SYNTAX table tbody {
+	text-align: left;
+	vertical-align: top;
+}
+
+.TABLE table tfoot,
+.NEWTABLE table tfoot,
+.custom table thead,
+.revhistory table tfoot,
+.COMPACT table tfoot,
+.ENCODINGTOP table tfoot,
+.SYNTAX table tfoot {
+	text-align: left;
+	vertical-align: middle;
+}
+
+.ENCODING table thead {
+	text-align: center;
+	vertical-align: bottom;
+}
+
+.ENCODING table tbody {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.ENCODING table tfoot {
+	text-align: center;
+	vertical-align: top;
+}
+
+.footnote {
+    font-size: 80%;
+}
+
+object[classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"]
+{ display:none; }
+
+/**************************************************************************
+ * Condition coloring
+ *************************************************************************/
+
+.conditionConfigurable {
+	background-color:#DDEEFF;
+}
+
+.conditionOptional {
+	background-color:#EEDDFF;
+}
+
+
+/**************************************************************************
+ * Toggler
+ *************************************************************************/
+
+.toggler {
+	cursor:pointer;
+}

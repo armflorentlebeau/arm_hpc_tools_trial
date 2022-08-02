@@ -1,0 +1,184 @@
+<?xml version="1.0"?>
+<!DOCTYPE html><html lang="en">
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="Copyright |copyp| Copyright &#xA9;&#xA0;2016-2019 Arm Limited (or its affiliates). All rights reserved. Limited or its affiliates. All rights reserved."/>
+<meta content="Software Development Tools, IDEs and Tool Suites, High Performance Computing (HPC), Forge, Software Development Tools, IDEs and Tool Suites, High Performance Computing (HPC), Performance Reports" name="keywords"/>
+<title>Optimize the code</title>
+<link rel="stylesheet" href="armEclipse.css" type="text/css"/>
+</head>
+<body>
+<div class="book">
+
+
+<div class="section" id="optimize-the-code">
+<h1>Optimize the code</h1>
+<p>Describes how to profile and optimize the example code used in the Arm<sup>®</sup> Allinea Studio/Arm<sup>®</sup> Forge Trials tutorial using Arm Performance Reports and Arm MAP. Arm Performance Reports can identify high memory accesses, and Arm MAP can identify the time-consuming loops in the example code.</p>
+<div class="section" id="before-you-begin">
+<h2>Before you begin</h2>
+<ul>
+<li>You must install all the necessary tools as described in <a href="software-requirements.html"><span class="doc">Software requirements</span></a></li>
+<li>You must complete the instructions in <a href="compile-and-run-the-example-code.html"><span class="doc">Compile and Run the Code</span></a>, <a href="fix-the-bug.html"><span class="doc">Fix the bug</span></a>, and <a href="analyze.html"><span class="doc">Analyze the behavior</span></a>.</li>
+<li>Ensure the code has been compiled with the <code class="docutils literal notranslate"><span class="pre">-g</span></code> debugging flag.</li>
+</ul>
+</div>
+<div class="section" id="procedure">
+<h2>Procedure</h2>
+<ol>
+<li><p class="first">To profile the code with multiple processes and the 3072x3072 test case, use <code class="docutils literal notranslate"><span class="pre">map</span> <span class="pre">--profile</span> <span class="pre">mpirun</span></code>. For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span/>map --profile mpirun -n 8 ./mmult 3072
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span/>map --profile mpirun -n 8 python ./mmult.py -s 3072
+</pre></div>
+</div>
+<p>If express launch is not supported for your MPI environment, run <code class="docutils literal notranslate"><span class="pre">map</span> <span class="pre">--profile</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span/>map --profile -n 8 ./mmult 3072
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span/>map --profile -n 8 python ./mmult.py -s 3072
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">--profile</span></code> option runs the profiler in non-interactive mode. When the execution terminates, a profile file is created by Arm MAP:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span/>mmult_8p_1n_YYYY-MM-DD_HH-MM.map
+</pre></div>
+</div>
+<p>YYY-MM-DD_HH-MM corresponds to a timestamp of the report creation date.</p>
+</li>
+<li><p class="first">To view the results, run the interactive mode:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span/>map mmult_8p_1n_YYYY-MM-DD_HH-MM.map
+</pre></div>
+</div>
+<p>Arm MAP starts.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you are running remotely, make sure X forwarding is enabled.</p>
+</div>
+<div class="figure">
+<img src="map_main.png" alt="Arm MAP main window"/>
+</div>
+<p>The profile consists of three sections:</p>
+<ul>
+<li>Section 1: The metrics view describes the activity of the processes and threads over time. The colors indicate CPU (green), MPI (blue), or IO (orange) activity. If Python is used, the time spent in the Python interpreter is reported in pink.</li>
+<li>Section 2: The source code view shows annotations about the time spent on each line, and the type of activity performed (CPU, MPI, or IO).</li>
+<li>Section 3: The stack/function view shows aggregated data per call stack or function.</li>
+</ul>
+<p>Depending on your system configuration, the details might vary in your results. The profiler indicates that most of the time is spent in one line of the <code class="docutils literal notranslate"><span class="pre">mmult</span></code> function (or when using the Py version, the corresponding calls in the C of F90 version):</p>
+<ul>
+<li>In C: <code class="docutils literal notranslate"><span class="pre">res</span> <span class="pre">+=</span> <span class="pre">A[i*sz+k]*B[k*sz+j];</span></code></li>
+<li>In F90: <code class="docutils literal notranslate"><span class="pre">res=A(k,i)*B(j,k)+res</span></code></li>
+</ul>
+<p>Select this line of code. The CPU breakdown window appears on the right and shows the following results:</p>
+<div class="figure">
+<img src="map_line_breakdown.png" alt="Arm MAP line breakdown without optimized memory accesses"/>
+</div>
+<p>The results indicate inefficient memory accesses. The loop nest performs strided accesses to array B. In addition to this, a dependency on intermediate results prevents the compiler vectorizing properly.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">On non-x86 architectures, the CPU breakdown is not available. To visualize the high amount of cycles per instructions, L2 (or L3) cache misses, and stalled back-end cycles when the <code class="docutils literal notranslate"><span class="pre">mmult</span></code> function is being executed, instead go to "Metrics" and "CPU instruction".</p>
+</div>
+</li>
+<li><p class="first">Replace the following code in C:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span/><span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">sz</span><span class="o">/</span><span class="n">nslices</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">sz</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="kt">double</span> <span class="n">res</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">k</span><span class="o">&lt;</span><span class="n">sz</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">res</span> <span class="o">+=</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">sz</span><span class="o">+</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="o">*</span><span class="n">sz</span><span class="o">+</span><span class="n">j</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">sz</span><span class="o">+</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">res</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>with:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span/><span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">sz</span><span class="o">/</span><span class="n">nslices</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">k</span><span class="o">&lt;</span><span class="n">sz</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">sz</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">sz</span><span class="o">+</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">sz</span><span class="o">+</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="o">*</span><span class="n">sz</span><span class="o">+</span><span class="n">j</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>And in F90:</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span/><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">sz</span><span class="o">/</span><span class="n">nslices</span><span class="o">-</span><span class="mi">1</span>
+<span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">sz</span><span class="o">-</span><span class="mi">1</span>
+    <span class="n">res</span><span class="o">=</span><span class="mf">0.0</span>
+    <span class="k">do </span><span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">sz</span><span class="o">-</span><span class="mi">1</span>
+    <span class="n">res</span><span class="o">=</span><span class="n">A</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">B</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="n">res</span>
+    <span class="k">end do</span>
+<span class="k">    </span><span class="n">C</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">=</span><span class="n">res</span><span class="o">+</span><span class="n">C</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+<span class="k">end do</span>
+<span class="k">end do</span>
+</pre></div>
+</div>
+<p>with:</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span/><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">sz</span><span class="o">/</span><span class="n">nslices</span><span class="o">-</span><span class="mi">1</span>
+<span class="k">do </span><span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">sz</span><span class="o">-</span><span class="mi">1</span>
+    <span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">sz</span><span class="o">-</span><span class="mi">1</span>
+    <span class="n">C</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">=</span><span class="n">A</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">B</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="n">C</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">end do</span>
+<span class="k">end do</span>
+<span class="k">end do</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Remove the previous executable, recompile, and run Arm MAP again:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span/>make clean
+make
+map --profile -n 8 ./mmult 3072
+</pre></div>
+</div>
+<p>The profiling results show significant performance improvement because of the optimization.</p>
+<div class="figure">
+<img src="map_line_opt.png" alt="Arm MAP line breakdown with optimized memory accesses"/>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="next-steps">
+<h2>Next steps</h2>
+<p>To go further and use an optimized version of the matrix multiplication:</p>
+<ul>
+<li><p class="first">In the C version, call CBLAS instead of <code class="docutils literal notranslate"><span class="pre">mmult</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span/>#include &lt;cblas.h&gt;
+
+...
+
+cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, size/nproc, sz, sz, 1.0, mat_a, sz, mat_b, sz, 1.0, mat_c, sz);
+</pre></div>
+</div>
+</li>
+<li><p class="first">In the <code class="docutils literal notranslate"><span class="pre">F90</span></code> version, call BLAS instead of <code class="docutils literal notranslate"><span class="pre">mmult</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span/>call DGEMM('N','N', sz, sz/nproc, sz, 1.0D0, &amp;
+           mat_b, sz, &amp;
+           mat_a, sz, 1.0D0, &amp;
+           mat_c, sz)
+</pre></div>
+</div>
+<p>Make sure you edit <code class="docutils literal notranslate"><span class="pre">make.def</span></code> to include the BLAS header and link to your BLAS library, for instance with OpenBLAS:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span/>CFLAGS = -Ofast -g -I/opt/openblas/include
+LFLAGS = -L/opt/openblas/lib -lopenblas
+</pre></div>
+</div>
+</li>
+</ul>
+<p>In the <code class="docutils literal notranslate"><span class="pre">Py</span></code> version, the call to SciPy's DGEMM can be run with the following command:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span/>mpirun -n 8 python ./mmult.py -k Py -s 3072
+</pre></div>
+</div>
+</div>
+</div>
+
+
+</div>
+<div align="center" class="footer"><p> Copyright © 2019 Arm Limited (or its affiliates). All rights reserved.</p></div>
+</html>
