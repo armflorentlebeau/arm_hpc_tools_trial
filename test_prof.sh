@@ -82,15 +82,15 @@ case $1 in
     ;;
   F90)
     setup
-    test_f
+    test_f90
     patch -s -p 1 < ${ROOT_DIR}/test/patches/blas.patch
-    test_c
+    test_f90
     ;;
   Py)
     setup
     test_py
     patch -s -p 1 < ${ROOT_DIR}/test/patches/blas.patch
-    test_c
+    test_py
     ;;
   *)
     usage
