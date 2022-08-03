@@ -46,6 +46,9 @@ jobs:
         run: |
           docker pull ghcr.io/${{ github.actor }}/armhpctrial:latest
 
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
       # Run tests
       - name: Tests
         id: tests
