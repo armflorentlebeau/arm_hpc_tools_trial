@@ -46,13 +46,23 @@ test_py () {
   pushd src/Py
   juLog -name="py_build" make
   mpirun python3 ./mmult.py -k C 2>&1 | tee app.out
-  juLog -name="py_run_c" check_output "0: Done."
+  juLog -name="py_run_c" check_output "0: Done"
   juLog -name="py_results_c" diff -q res_*.mat ${ROOT_DIR}/test/ref/ref_Py.mat
   mpirun python3 ./mmult.py -k F90 2>&1 | tee app.out
-  juLog -name="py_run_f" check_output "0: Done."
+  juLog -name="py_run_f" check_output "0: Done"
   juLog -name="py_results_f" diff -q res_*.mat ${ROOT_DIR}/test/ref/ref_Py.mat
   popd
 }
+
+test_p_blas () {
+  echo "Testing Py version"
+  pushd src/Py
+  mpirun python3 ./mmult.py -k Py 2>&1 | tee app.out
+  juLog -name="py_run_py" check_output "0: Done"
+  juLog -name="py_results_py" diff -q res_*.mat ${ROOT_DIR}/test/ref/ref_Py.mat
+  popd
+}
+
 
 
 setup () {
@@ -90,7 +100,7 @@ case $1 in
     setup
     test_py
     patch -s -p 1 < ${ROOT_DIR}/test/patches/blas.patch
-    test_py
+    test_py_blas
     ;;
   *)
     usage
