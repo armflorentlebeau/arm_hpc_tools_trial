@@ -1,6 +1,6 @@
 # This workflow build the Docker image with the application 
 
-name: Python Tests Python
+name: Python Tests Profiling
 
 # Controls when the action will run. 
 on:
