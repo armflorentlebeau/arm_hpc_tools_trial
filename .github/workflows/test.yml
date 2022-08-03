@@ -50,7 +50,7 @@ jobs:
       - name: Tests
         id: tests
         run: |
-          docker run --platform arm64 -v arm_hpc_tools_trial:/work --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest ./test.sh > test.out
+          docker run --platform arm64 -v $PWD/arm_hpc_tools_trial:/work --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest bash ./test.sh > test.out
 
       # Publish Junit report
       - name: Publish Test Report
