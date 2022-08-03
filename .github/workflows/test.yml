@@ -53,6 +53,8 @@ jobs:
       - name: Tests
         id: tests
         run: |
+          chmod -R ugo+rw arm_hpc_tools_trial
+          docker run --platform arm64 -v $PWD/arm_hpc_tools_trial:/work --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest ls -al
           docker run --platform arm64 -v $PWD/arm_hpc_tools_trial:/work --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest bash ./test.sh > test.out
 
       # Publish Junit report
