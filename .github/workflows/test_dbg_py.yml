@@ -1,6 +1,6 @@
 # This workflow build the Docker image with the application 
 
-name: Fortran Tests
+name: Python Tests Debugging
 
 # Controls when the action will run. 
 on:
@@ -49,7 +49,7 @@ jobs:
         id: tests
         run: |
           chmod -R ugo+rw .
-          docker run --platform arm64 -v $PWD:/work --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest bash ./test.sh F90
+          docker run --platform arm64 -v $PWD:/work --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest bash ./test_dbg.sh Py
 
       # Publish Junit report
       - name: Publish Test Report
@@ -71,11 +71,11 @@ jobs:
         run: |
           mkdir -p .github/badges
           cd .github/badges
-          rm -f f_dbg.svg
-          if [ ${{ needs.tests.outputs.failed }} -gt 0 ]; then curl -o f_dbg.svg https://img.shields.io/badge/Fortran-fail-red; else curl -o f_dbg.svg https://img.shields.io/badge/Fortran-pass-green ; fi
+          rm -f py_dbg.svg
+          if [ ${{ needs.tests.outputs.failed }} -gt 0 ]; then curl -o py_dbg.svg https://img.shields.io/badge/Python-fail-red; else curl -o py_dbg.svg https://img.shields.io/badge/Python-pass-green ; fi
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add f_dbg.svg
+          git add py_dbg.svg
           git pull
           if git commit -m "Update badges"; then
             git push

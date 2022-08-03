@@ -1,0 +1,82 @@
+# This workflow build the Docker image with the application 
+
+name: Fortran Tests Debugging
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # Build the container application
+  tests:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-20.04
+    # Outputs
+    outputs:
+      failed: ${{ steps.junit.outputs.failed }}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # For cross-platform
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # Download image
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull image
+        run: |
+          docker pull ghcr.io/${{ github.actor }}/armhpctrial:latest
+
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      # Run tests
+      - name: Tests
+        id: tests
+        run: |
+          chmod -R ugo+rw .
+          docker run --platform arm64 -v $PWD:/work --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest bash ./test_dbg.sh F90
+
+      # Publish Junit report
+      - name: Publish Test Report
+        id: junit
+        uses: mikepenz/action-junit-report@v3
+        if: always() # always run even if the previous step fails
+        with:
+          report_paths: '**/results/TEST-*.xml'
+
+  badge:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-20.04
+    needs: tests
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Update badge
+        run: |
+          mkdir -p .github/badges
+          cd .github/badges
+          rm -f f_dbg.svg
+          if [ ${{ needs.tests.outputs.failed }} -gt 0 ]; then curl -o f_dbg.svg https://img.shields.io/badge/Fortran-fail-red; else curl -o f_dbg.svg https://img.shields.io/badge/Fortran-pass-green ; fi
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add f_dbg.svg
+          git pull
+          if git commit -m "Update badges"; then
+            git push
+          fi
