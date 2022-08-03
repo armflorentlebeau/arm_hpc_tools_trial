@@ -53,11 +53,8 @@ jobs:
       - name: Tests
         id: tests
         run: |
-          pwd
-          ls -al
           chmod -R ugo+rw .
-          docker run --platform arm64 -v $PWD:/work --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest ls -al
-          docker run --platform arm64 -v $PWD:/work --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest bash ./test.sh > test.out
+          docker run --platform arm64 -v $PWD:/work --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest bash ./test.sh
 
       # Publish Junit report
       - name: Publish Test Report
@@ -66,31 +63,3 @@ jobs:
         with:
           report_paths: '**/results/TEST-*.xml'
 
-  badge:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-20.04
-    needs: get_image
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-
-      - name: Update badge
-        run: |
-          mkdir -p .github/badges
-          cd .github/badges
-          rm -f *.svg
-          curl -o os.svg https://img.shields.io/badge/${{ needs.get_image.outputs.os }}-blue
-          curl -o gcc.svg https://img.shields.io/badge/gcc-${{ needs.get_image.outputs.gcc }}-blue
-          curl -o gfortran.svg https://img.shields.io/badge/gfortran-${{ needs.get_image.outputs.gfortran }}-blue
-          curl -o openmpi.svg https://img.shields.io/badge/openmpi-${{ needs.get_image.outputs.openmpi }}-blue
-          curl -o python.svg https://img.shields.io/badge/python-${{ needs.get_image.outputs.python }}-blue
-          curl -o numpy.svg https://img.shields.io/badge/numpy-${{ needs.get_image.outputs.numpy }}-blue
-          curl -o scipy.svg https://img.shields.io/badge/scipy-${{ needs.get_image.outputs.scipy }}-blue
-          curl -o mpi4py.svg https://img.shields.io/badge/mpi4py-${{ needs.get_image.outputs.mpi4py }}-blue
-          curl -o blas.svg https://img.shields.io/badge/blas-${{ needs.get_image.outputs.blas }}-blue
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add *.svg
-          if git commit -m "Update badges"; then
-            git push
-          fi
