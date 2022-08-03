@@ -21,6 +21,9 @@ RUN pip install mpi4py
 
 RUN apt install -y sudo
 
+RUN mkdir /work
+RUN chmod +rwx /work
+
 # DOCKER_USER for the Docker user
 ENV DOCKER_USER=ubuntu
 
@@ -31,3 +34,4 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 USER ubuntu
 
+WORKDIR /work
