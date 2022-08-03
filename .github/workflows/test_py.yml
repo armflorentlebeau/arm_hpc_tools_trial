@@ -72,7 +72,7 @@ jobs:
           mkdir -p .github/badges
           cd .github/badges
           rm -f py_dbg.svg
-          if [ ${{ needs.tests.outputs.failed }} -gt 0 ]; then curl -o c_dbg.svg https://img.shields.io/badge/Py-fail-red; else curl -o c_dbg.svg https://img.shields.io/badge/Py-pass-green ; fi
+          if [ ${{ needs.tests.outputs.failed }} -gt 0 ]; then curl -o py_dbg.svg https://img.shields.io/badge/Py-fail-red; else curl -o py_dbg.svg https://img.shields.io/badge/Py-pass-green ; fi
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add py_dbg.svg
