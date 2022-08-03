@@ -30,4 +30,3 @@ RUN useradd --create-home -s /bin/bash -m $DOCKER_USER && \
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 USER ubuntu
-
