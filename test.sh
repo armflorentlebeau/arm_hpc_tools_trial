@@ -30,7 +30,7 @@ patch -s -p 1 < ${ROOT_DIR}/test/patches/asan.patch
 echo "Testing C version"
 pushd src/C
 juLog -name="build" -class="c_dbg" make
-mpirun -n 4 ./mmult &> app.out
+mpirun -n 4 ./mmult 2>&1 | tee app.out
 juLog -name="run_buffer_overflow" -class="c_dbg" check_output "AddressSanitizer: heap-buffer-overflow"
 #juLog -name="run_stack0" -class="c_dbg" check_output "mmult.c:67"
 #juLog -name="run_stack1" -class="c_dbg" check_output "mmult.c:164"
@@ -39,7 +39,7 @@ popd
 echo "Testing Fortran version"
 pushd src/F90
 juLog -name="build" -class="fortran_dbg" make
-mpirun -n 4 ./mmult &> app.out
+mpirun -n 4 ./mmult 2>&1 | tee app.out
 juLog -name="run_buffer_overflow" -class="fortran_dbg" check_output "AddressSanitizer: heap-buffer-overflow"
 #juLog -name="run_stack0" -class="fortran_dbg" check_output "mmult.F90:78"
 #juLog -name="run_stack1" -class="fortran_dbg" check_output "mmult.F90:17"
