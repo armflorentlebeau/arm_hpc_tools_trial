@@ -1,14 +1,14 @@
 # This workflow build the Docker image with the application 
 
-name: Tests
+name: C Tests
 
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
-  #push:
-  #  branches: [ master ]
-  #pull_request:
-  #  branches: [ master ]
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-20.04
     # Outputs
     outputs:
-      c_dbg: ${{ steps.junit.outputs.failed }}
+      failed: ${{ steps.junit.outputs.failed }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -73,3 +73,9 @@ jobs:
           cd .github/badges
           rm -f c_dbg.svg
           if [ ${{ needs.tests.outputs.failed }} -gt 0 ]; then curl -o c_dbg.svg https://img.shields.io/badge/C-fail-red; else curl -o c_dbg.svg https://img.shields.io/badge/C-pass-green ; fi
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add *.svg
+          if git commit -m "Update badges"; then
+            git push
+          fi
