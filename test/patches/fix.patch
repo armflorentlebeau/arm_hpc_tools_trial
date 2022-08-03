@@ -30,7 +30,7 @@
  FC = mpif90
 
  # Define additional compilation flags
--CFLAGS = -fsanitize=address -O0 -g
+-CFLAGS =
 +CFLAGS = -O0 -g
  LFLAGS =
 
