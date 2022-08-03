@@ -7,6 +7,7 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 RUN apt update
 RUN apt install -y \
   lsb-release \
+  bc \
   build-essential \
   gfortran \
   git \

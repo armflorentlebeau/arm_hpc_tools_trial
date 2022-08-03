@@ -24,6 +24,7 @@ check_output () { # $1-string
   fi
 }
 
+# Enable ASAN
 patch -s -p 1 < ${ROOT_DIR}/test/patches/asan.patch
 
 echo "Testing C version"
@@ -31,8 +32,8 @@ pushd src/C
 juLog -name="build" -class="c_dbg" make
 mpirun -n 4 ./mmult &> app.out
 juLog -name="run_buffer_overflow" -class="c_dbg" check_output "AddressSanitizer: heap-buffer-overflow"
-juLog -name="run_stack0" -class="c_dbg" check_output "mmult.c:67"
-juLog -name="run_stack1" -class-"c_dbg" check_output "mmult.c:164"
+#juLog -name="run_stack0" -class="c_dbg" check_output "mmult.c:67"
+#juLog -name="run_stack1" -class="c_dbg" check_output "mmult.c:164"
 popd
 
 echo "Testing Fortran version"
@@ -40,19 +41,18 @@ pushd src/F90
 juLog -name="build" -class="fortran_dbg" make
 mpirun -n 4 ./mmult &> app.out
 juLog -name="run_buffer_overflow" -class="fortran_dbg" check_output "AddressSanitizer: heap-buffer-overflow"
-juLog -name="run_stack0" -class="fortran_dbg" check_output "mmult.F90:78"
-juLog -name="run_stack1" -class="fortran_dbg" check_output "mmult.F90:17"
+#juLog -name="run_stack0" -class="fortran_dbg" check_output "mmult.F90:78"
+#juLog -name="run_stack1" -class="fortran_dbg" check_output "mmult.F90:17"
 popd
 
 echo "Testing Python version"
 pushd src/Py
-#TODO
+juLog -name="build" -class="py_dbg" make
+mpirun -n 4 python3 ./mmult.py -k C &> app.out
+juLog -name="run_c_buffer_overflow" -class="py_dbg" check_output "AddressSanitizer: heap-buffer-overflow"
+mpirun -n 4 python3 ./mmult.py -k F90 &> app.out
+juLog -name="run_f90_buffer_overflow" -class="py_dbg" check_output "AddressSanitizer: heap-buffer-overflow"
 popd
 
-patch -s -p 1 < ${ROOT_DIR}/test/patches/fix.patch
-
-juLog  -name=myErrorCommand -ierror=World   echo Hello World
-
 cd $ROOT_DIR
-rm -rf $TMP_DIR
 
