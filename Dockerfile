@@ -14,10 +14,12 @@ RUN apt install -y \
   python3 \
   python3-pip \
   openmpi-bin \
+  linux-tools-common linux-tools-generic linux-tools-`uname -r` \
   libblas-dev
 
 RUN pip install numpy scipy
 RUN pip install mpi4py
+RUN pip install matplotlib
 
 RUN apt install -y sudo
 
