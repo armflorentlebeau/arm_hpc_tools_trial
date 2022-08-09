@@ -41,7 +41,7 @@ jobs:
       - name: Benchmark
         run: |
           chmod -R ugo+rw .
-          docker run -v $PWD:/work --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest python3 ./data.py
+          docker run --cap-add=SYS_PTRACE --security-opt=seccomp:unconfined -v $PWD:/work --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest python3 ./data.py
           mkdir -p .github/data
           cp data.png .github/data/graph.png
 
