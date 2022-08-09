@@ -157,6 +157,3 @@ os.chdir(root)
 plt.set_size_inchees=(18.5,20.5)
 plt.savefig("data.png", dpi=100)
 
-
-
-
