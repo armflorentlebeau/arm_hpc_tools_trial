@@ -1,0 +1,56 @@
+# This workflow generates performance graphs on Graviton 2
+
+name: C Performance Data Graphs
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # Build the container application
+  generate graph:
+    # The type of runner that the job will run on
+    runs-on: ARM64
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Download image
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull image
+        run: |
+          docker pull ghcr.io/${{ github.actor }}/armhpctrial:latest
+
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      # Run benchmark and generate graph
+      - name: Benchmark
+        run: |
+          chmod -R ugo+rw .
+          docker run -v $PWD:/work --rm -i ghcr.io/${{ github.actor }}/armhpctrial:latest python3 ./data.py
+          mkdir -p .github/data
+          cp data.png .github/data/graph.png
+
+      - name: Commit and push
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .github/data/graph.png
+          git pull
+          if git commit -m "Update data graph"; then
+            git push
+          fi
