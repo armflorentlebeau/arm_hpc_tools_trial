@@ -17,4 +17,8 @@ Test reports:
 | Debug     | ![c_debug](https://raw.githubusercontent.com/armflorentlebeau/arm_hpc_tools_trial/master/.github/badges/c_dbg.svg) ![f_debug](https://raw.githubusercontent.com/armflorentlebeau/arm_hpc_tools_trial/master/.github/badges/f_dbg.svg) ![py_debug](https://raw.githubusercontent.com/armflorentlebeau/arm_hpc_tools_trial/master/.github/badges/py_dbg.svg) |
 | Profile   | ![c_profile](https://raw.githubusercontent.com/armflorentlebeau/arm_hpc_tools_trial/master/.github/badges/c_prof.svg) ![f_profile](https://raw.githubusercontent.com/armflorentlebeau/arm_hpc_tools_trial/master/.github/badges/f_prof.svg) ![py_profile](https://raw.githubusercontent.com/armflorentlebeau/arm_hpc_tools_trial/master/.github/badges/py_prof.svg) |
 
+Performance report:
+
+![report](https://raw.githubusercontent.com/armflorentlebeau/arm_hpc_tools_trial/master/.github/data/graph.png)
+
 For more information about the tutorial, check README.txt and doc/tutorial.rst
