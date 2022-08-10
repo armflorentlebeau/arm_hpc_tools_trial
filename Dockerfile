@@ -15,6 +15,7 @@ RUN apt install -y \
   python3-pip \
   openmpi-bin \
   linux-tools-common linux-tools-generic linux-tools-`uname -r` \
+  linux-tools-5.4.0-124 linux-tools-5.4.0-124-generic linux-tools-5.15.0-1015-aws \
   libblas-dev
 
 RUN pip install numpy scipy
